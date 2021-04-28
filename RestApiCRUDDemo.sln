@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestApiCRUDDemo", "RestApiCRUDDemo.csproj", "{062ECB14-D770-434D-AFA3-BDDCE0983FCF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{062ECB14-D770-434D-AFA3-BDDCE0983FCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{062ECB14-D770-434D-AFA3-BDDCE0983FCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{062ECB14-D770-434D-AFA3-BDDCE0983FCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{062ECB14-D770-434D-AFA3-BDDCE0983FCF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {905D4072-4A92-46EF-8358-186B95560EE5}
+	EndGlobalSection
+EndGlobal
