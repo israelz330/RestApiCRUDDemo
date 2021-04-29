@@ -31,6 +31,15 @@ namespace RestApiCRUDDemo
         {
             services.AddControllers();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "ConsolePolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins("https://localhost:44364", "https://localhost:44364").WithMethods("GET");
+                    });
+            });
+
             /*
              * AddDbContext vs AddDbContextPool
              * DbContext is not thread-safe. So you cannot reuse the same DbContext object for multiple queries at the same time.
