@@ -51,7 +51,6 @@ namespace RestApiCRUDDemo.Controllers
             return orderedList;
         }
 
-
         /// <summary>
         /// Gets all the employees of the company.
         /// </summary>
@@ -67,7 +66,6 @@ namespace RestApiCRUDDemo.Controllers
 
             return output;
         }
-
 
         /// <summary>
         /// Gets a single employee given its Id.
