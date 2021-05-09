@@ -39,7 +39,7 @@ namespace RestApiCRUDDemo
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>()
-                              .UseUrls("https://0.0.0.0:54691");
+                              .UseUrls("https://myapi:54691");
                 });
     }
 }

@@ -86,6 +86,20 @@ namespace RestApiCRUDDemo.Controllers
             return NotFound($"Employee with Id: {id} was not found");
         }
 
+        [Route("api/[controller]/GetByIDAsync/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> GetEmployeeAsync(Guid id)
+        {
+            var employee = await _employeeData.GetEmployeeAsync(id);
+
+            if (employee != null)
+            {
+                return Ok(employee);
+            }
+
+            return NotFound($"Employee with Id: {id} was not found");
+        }
+
         /// <summary>
         /// Add a new employee to the system. Only needs a name.
         /// </summary>
@@ -93,7 +107,7 @@ namespace RestApiCRUDDemo.Controllers
         /// <returns></returns>
         [Route("api/[controller]/AddNew")]
         [HttpPost]
-        public IActionResult AddEmployee(Employee employee)
+        public async Task<IActionResult> AddEmployee(Employee employee)
         {
             if (employee.Name == null)
             {
@@ -101,9 +115,16 @@ namespace RestApiCRUDDemo.Controllers
             }
             _employeeData.AddEmployee(employee);
 
+            await _employeeData.SaveChangesAsync();
+
             return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + employee.Id, employee);
         }
 
+        /// <summary>
+        /// Delete employee object from DB
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>HTTP result code</returns>
         [Route("api/[controller]/DeleteEmployee/{id}")]
         [HttpDelete]
         public IActionResult DeleteEmployee(Guid id)
@@ -119,7 +140,12 @@ namespace RestApiCRUDDemo.Controllers
             return NotFound("The emplpoyee was not found");
         }
 
-
+        /// <summary>
+        /// Edits the name of an existing Employee
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="employee"></param>
+        /// <returns>Ok HTTP code result or NotFound</returns>
         [Route("api/[controller]/EditEmployee/{id}")]
         [HttpPatch]
         public IActionResult EditEmployee(Guid id, Employee employee)

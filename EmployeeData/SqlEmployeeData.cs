@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace RestApiCRUDDemo.EmployeeData
 {
@@ -19,7 +20,7 @@ namespace RestApiCRUDDemo.EmployeeData
         {
             employee.Id = Guid.NewGuid();
             _employeeContext.Employees.Add(employee);
-            _employeeContext.SaveChanges();
+            //_employeeContext.SaveChanges();
             return employee;
         }
 
@@ -60,9 +61,26 @@ namespace RestApiCRUDDemo.EmployeeData
             return employee;
         }
 
+        public async Task<Employee> GetEmployeeAsync(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            var employee = await _employeeContext.Employees.FirstOrDefaultAsync(x => x.Id == id);
+
+            return employee;
+        }
+
         public List<Employee> GetEmployees()
         {
             return _employeeContext.Employees.ToList();
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return await _employeeContext.SaveChangesAsync() > 0;
         }
     }
 }
