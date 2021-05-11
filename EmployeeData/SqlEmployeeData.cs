@@ -29,8 +29,6 @@ namespace RestApiCRUDDemo.EmployeeData
 
             if (existingEmployee == null) return;
             _employeeContext.Employees.Remove(existingEmployee);
-            //_employeeContext.SaveChanges();
-
         }
 
         public Employee EditEmployee(Employee employee)
@@ -53,7 +51,6 @@ namespace RestApiCRUDDemo.EmployeeData
                 throw new ArgumentNullException(nameof(id));
             }
 
-            //var employee = _employeeContext.Employees.Find(id);
             var employee = await _employeeContext.Employees.FirstOrDefaultAsync(x => x.Id == id);
 
             return employee;

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,7 +22,7 @@ namespace RestApiCRUDDemo
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
         {
@@ -40,6 +42,7 @@ namespace RestApiCRUDDemo
            // This method configures the MVC services for the commonly used features with controllers for an API.
             services.AddControllers();
 
+            #region CORS Policy (Not used)
             //services.AddCors(options =>
             //{
             //    options.AddPolicy(name: "ConsolePolicy",
@@ -48,6 +51,9 @@ namespace RestApiCRUDDemo
             //            builder.WithOrigins("https://localhost:44364", "https://localhost:44364").WithMethods("GET");
             //        });
             //});
+            
+
+            #endregion
 
             /*
              * AddDbContext vs AddDbContextPool
@@ -59,6 +65,8 @@ namespace RestApiCRUDDemo
             //Another valid getter for ConnectionString
             //services.AddDbContextPool<EmployeeContext>(options => options.UseSqlServer(Configuration.GetSection("ConnectionStrings")["EmployeeContextConnectionString"]));
 
+            #region Scoped Explanation
+
             /*
              * DEPENDECY INJECTION
              * Transient objects are always different; a new instance is provided to every controller and every service.
@@ -68,11 +76,20 @@ namespace RestApiCRUDDemo
             //This was used when we de not have a DB connection and the data was hard-coded
             //services.AddSingleton<IEmployeeData, MockEmployeeData>();
 
+            #endregion
+            
             services.AddScoped<IEmployeeData, SqlEmployeeData>();
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestApiCRUDDemo", Version = "v1" });
+                
+                //Add documentation comments to the API
+                //https://docs.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-5.0&tabs=visual-studio#xml-comments
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
         }
 
@@ -81,6 +98,7 @@ namespace RestApiCRUDDemo
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //I want Swagger in production...
             //if (env.IsDevelopment())
             //{
                 app.UseDeveloperExceptionPage();

@@ -13,6 +13,7 @@ namespace RestApiCRUDDemo.Controllers
     /// Gets all the employees of the company.
     /// </summary>
     /// <returns>List of employees...</returns>
+    [Route("api/[controller]")]
     public class EmployeesController : ControllerBase
     {
         private IEmployeeData _employeeData;
@@ -25,7 +26,7 @@ namespace RestApiCRUDDemo.Controllers
         /// <summary>
         /// Gets all the employees of the company.
         /// </summary>
-        [Route("api/[controller]/GetEmployeesData")]
+        [Route("GetEmployeesData")]
         [HttpGet]
         public async Task<IActionResult> GetEmployees()
         {
@@ -33,42 +34,25 @@ namespace RestApiCRUDDemo.Controllers
         }
 
         /// <summary>
-        /// Get only the employee names
+        /// Gets name of the developer
         /// </summary>
-        /// <returns>A list with the names of the Employees</returns>
-        //[Route("api/[controller]/GetEmployeeNamesOnly")]
-        //[HttpGet]
-        //public async Task<List<string>> GetOrderedEmployees()
-        //{
-        //    List<string> orderedList = new List<string>();
-        //    foreach (var item in _employeeData.GetEmployeesAsync())
-        //    {
-        //        orderedList.Add(item.Name);
-        //    }
-
-        //    orderedList.Sort();
-
-        //    return orderedList;
-        //}
-
-        /// <summary>
-        /// Gets all the employees of the company.
-        /// </summary>
-        [Route("api/[controller]/GetAdminNames")]
+        [Route("GetDeveloperUserName")]
         [HttpGet]
         public List<string> GetNames()
         {
             List<string> output = new List<string>();
 
-            output.Add("Israel");
-            output.Add("Mercedes");
-            output.Add("Rodrigo");
+            output.Add("Israel Zapata (israelz330)");
 
             return output;
         }
 
-
-        [Route("api/[controller]/GetById/{id}")]
+        /// <summary>
+        /// Gets single employee by entering its id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Single Employee</returns>
+        [Route("GetById/{id}")]
         [HttpGet]
         public async Task<IActionResult> GetEmployeeAsync(Guid id)
         {
@@ -87,7 +71,7 @@ namespace RestApiCRUDDemo.Controllers
         /// </summary>
         /// <param name="employee">Name of the new employee...</param>
         /// <returns></returns>
-        [Route("api/[controller]/AddNew")]
+        [Route("AddNew")]
         [HttpPost]
         public async Task<IActionResult> AddEmployee(Employee employee)
         {
@@ -107,7 +91,7 @@ namespace RestApiCRUDDemo.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns>HTTP result code</returns>
-        [Route("api/[controller]/DeleteEmployee/{id}")]
+        [Route("DeleteEmployee/{id}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteEmployee(Guid id)
         {
@@ -129,7 +113,7 @@ namespace RestApiCRUDDemo.Controllers
         /// <param name="id"></param>
         /// <param name="employee"></param>
         /// <returns>Ok HTTP code result or NotFound</returns>
-        [Route("api/[controller]/EditEmployee/{id}")]
+        [Route("EditEmployee/{id}")]
         [HttpPatch]
         public async Task <IActionResult> EditEmployee(Guid id, Employee employee)
         {

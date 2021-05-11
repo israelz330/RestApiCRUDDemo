@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace RestApiCRUDDemo
 {
+#pragma warning disable CS1591
     public class Program
     {
 
@@ -42,4 +43,5 @@ namespace RestApiCRUDDemo
                               .UseUrls("https://myapi:54691");
                 });
     }
+#pragma warning restore CS1591
 }
