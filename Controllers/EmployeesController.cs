@@ -27,29 +27,29 @@ namespace RestApiCRUDDemo.Controllers
         /// </summary>
         [Route("api/[controller]/GetEmployeesData")]
         [HttpGet]
-        public IActionResult GetEmployees()
+        public async Task<IActionResult> GetEmployees()
         {
-            return Ok(_employeeData.GetEmployees());
+            return Ok(await _employeeData.GetEmployeesAsync());
         }
 
         /// <summary>
         /// Get only the employee names
         /// </summary>
         /// <returns>A list with the names of the Employees</returns>
-        [Route("api/[controller]/GetEmployeeNamesOnly")]
-        [HttpGet]
-        public List<string> GetOrderedEmployees()
-        {
-            List<string> orderedList = new List<string>();
-            foreach (var item in _employeeData.GetEmployees())
-            {
-                orderedList.Add(item.Name);
-            }
+        //[Route("api/[controller]/GetEmployeeNamesOnly")]
+        //[HttpGet]
+        //public async Task<List<string>> GetOrderedEmployees()
+        //{
+        //    List<string> orderedList = new List<string>();
+        //    foreach (var item in _employeeData.GetEmployeesAsync())
+        //    {
+        //        orderedList.Add(item.Name);
+        //    }
 
-            orderedList.Sort();
+        //    orderedList.Sort();
 
-            return orderedList;
-        }
+        //    return orderedList;
+        //}
 
         /// <summary>
         /// Gets all the employees of the company.
@@ -67,26 +67,8 @@ namespace RestApiCRUDDemo.Controllers
             return output;
         }
 
-        /// <summary>
-        /// Gets a single employee given its Id.
-        /// </summary>
-        /// <param name="id">The unique identifier fot this employee</param>
-        /// <returns></returns>
-        [Route("api/[controller]/GetByID/{id}")]
-        [HttpGet]
-        public IActionResult GetEmployee(Guid id)
-        {
-            var employee = _employeeData.GetEmployee(id);
 
-            if (employee != null)
-            {
-                return Ok(employee);
-            }
-
-            return NotFound($"Employee with Id: {id} was not found");
-        }
-
-        [Route("api/[controller]/GetByIDAsync/{id}")]
+        [Route("api/[controller]/GetById/{id}")]
         [HttpGet]
         public async Task<IActionResult> GetEmployeeAsync(Guid id)
         {
@@ -127,13 +109,14 @@ namespace RestApiCRUDDemo.Controllers
         /// <returns>HTTP result code</returns>
         [Route("api/[controller]/DeleteEmployee/{id}")]
         [HttpDelete]
-        public IActionResult DeleteEmployee(Guid id)
+        public async Task<IActionResult> DeleteEmployee(Guid id)
         {
-            var existingEmployee = _employeeData.GetEmployee(id);
+            var existingEmployee = await _employeeData.GetEmployeeAsync(id);
 
             if (existingEmployee != null)
             {
                 _employeeData.DeleteEmployee(existingEmployee);
+                await _employeeData.SaveChangesAsync();
                 return Ok();
             }
 
@@ -148,14 +131,15 @@ namespace RestApiCRUDDemo.Controllers
         /// <returns>Ok HTTP code result or NotFound</returns>
         [Route("api/[controller]/EditEmployee/{id}")]
         [HttpPatch]
-        public IActionResult EditEmployee(Guid id, Employee employee)
+        public async Task <IActionResult> EditEmployee(Guid id, Employee employee)
         {
-            var existingEmployee = _employeeData.GetEmployee(id);
+            var existingEmployee = await _employeeData.GetEmployeeAsync(id);
 
             if (existingEmployee != null)
             {
                 employee.Id = existingEmployee.Id;
                 _employeeData.EditEmployee(employee);
+                await _employeeData.SaveChangesAsync();
                 return Ok();
             }
 

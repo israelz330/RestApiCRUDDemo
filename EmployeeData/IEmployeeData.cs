@@ -9,8 +9,7 @@ namespace RestApiCRUDDemo.EmployeeData
     public interface IEmployeeData
     {
         #region GetEmployee/s
-        List<Employee> GetEmployees();
-        Employee GetEmployee(Guid id);
+        Task<List<Employee>> GetEmployeesAsync();
         Task<Employee> GetEmployeeAsync(Guid id);
         #endregion
 

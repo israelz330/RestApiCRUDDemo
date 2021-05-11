@@ -9,7 +9,7 @@ namespace RestApiCRUDDemo.EmployeeData
 {
     public class SqlEmployeeData : IEmployeeData
     {
-        private EmployeeContext _employeeContext;
+        private readonly EmployeeContext _employeeContext;
 
 
         public SqlEmployeeData(EmployeeContext employeeContext)
@@ -20,7 +20,6 @@ namespace RestApiCRUDDemo.EmployeeData
         {
             employee.Id = Guid.NewGuid();
             _employeeContext.Employees.Add(employee);
-            //_employeeContext.SaveChanges();
             return employee;
         }
 
@@ -28,14 +27,10 @@ namespace RestApiCRUDDemo.EmployeeData
         {
             var existingEmployee = _employeeContext.Employees.Find(employee.Id);
 
-            if (existingEmployee != null)
-            {
-                _employeeContext.Employees.Remove(existingEmployee);
-                _employeeContext.SaveChanges();
-            }
+            if (existingEmployee == null) return;
+            _employeeContext.Employees.Remove(existingEmployee);
+            //_employeeContext.SaveChanges();
 
-            //This should work too!!
-            //_employeeContext.Employees.Remove(employee);
         }
 
         public Employee EditEmployee(Employee employee)
@@ -46,18 +41,8 @@ namespace RestApiCRUDDemo.EmployeeData
             {
                 existingEmployee.Name = employee.Name;
                 _employeeContext.Employees.Update(existingEmployee);
-                _employeeContext.SaveChanges();
             }
 
-            return employee;
-        }
-
-        public Employee GetEmployee(Guid id)
-        {
-            //THIS WILL ALSO WORK
-            //return _employeeContext.Employees.SingleOrDefault(x => x.Id == id);
-
-            var employee = _employeeContext.Employees.Find(id);
             return employee;
         }
 
@@ -68,14 +53,15 @@ namespace RestApiCRUDDemo.EmployeeData
                 throw new ArgumentNullException(nameof(id));
             }
 
+            //var employee = _employeeContext.Employees.Find(id);
             var employee = await _employeeContext.Employees.FirstOrDefaultAsync(x => x.Id == id);
 
             return employee;
         }
 
-        public List<Employee> GetEmployees()
+        public async Task<List<Employee>> GetEmployeesAsync()
         {
-            return _employeeContext.Employees.ToList();
+            return await _employeeContext.Employees.ToListAsync();
         }
 
         public async Task<bool> SaveChangesAsync()

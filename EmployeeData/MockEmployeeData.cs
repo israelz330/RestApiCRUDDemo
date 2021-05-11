@@ -38,11 +38,6 @@ namespace RestApiCRUDDemo.EmployeeData
             return employee;
         }
 
-        public Task AddEmployeeAsync(Employee employee)
-        {
-            throw new NotImplementedException();
-        }
-
         public void DeleteEmployee(Employee employee)
         {
             employees.Remove(employee);
@@ -53,6 +48,11 @@ namespace RestApiCRUDDemo.EmployeeData
             var existingEmployee = GetEmployee(employee.Id);
             existingEmployee.Name = employee.Name;
             return existingEmployee;
+        }
+
+        public Task<bool> SaveChangesAsync()
+        {
+            throw new NotImplementedException();
         }
 
         public Employee GetEmployee(Guid id)
@@ -69,6 +69,11 @@ namespace RestApiCRUDDemo.EmployeeData
         public List<Employee> GetEmployees()
         {
             return employees;
+        }
+
+        public Task<List<Employee>> GetEmployeesAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }
